@@ -69,10 +69,10 @@
          //$('#ws').replaceWith('<text id=ws>' + payload + '</text>');
          var d = o.objects.toString();
          var ts = o.timestamp.toString();
-         var dd = d.replace(/\|/g, '-');
+         var dd = d.replace(/\|/g, ' ');
          var data = ts + " " + dd;
          var len = mqtt_msg_ary.push(data);
-         if (len > 30) {
+         if (len > 31) {
              var x = mqtt_msg_ary.toString();
              var xx = x.replaceAll(",", "<br />");
             $('#ws').replaceWith('<text id=ws>' + xx + '</text>');
@@ -88,17 +88,45 @@
     </script>
 
 	  <script type="text/javascript" src="jsmpeg.min.js"></script>
+
+    <style>
+     .grid-container {
+         display: grid;
+         grid-template-columns: auto auto;
+         background-color: #FFFF;
+         padding: 3px;
+     }
+     .grid-item1 {
+         margin: 0;
+         position: absolute;
+         top: 0%;
+         left: 0%;
+         -ms-transform: translate(0%, 0%);
+         transform: translate(0%, 0%);
+     }
+     .grid-item2 {
+         //background-color: rgba(255, 255, 255, 0.8);
+         //border: 1px solid rgba(0, 0, 0, 0.8);
+         //padding: 20px;
+         font-size: 12px;
+         text-align: left;
+     }
+     </style>
 </head>
 <body>
-    <table><tr><td>
-  <canvas id="video-canvas" style="width:1024px"></canvas>
-	<script type="text/javascript">
-		var canvas = document.getElementById('video-canvas');
-    var url = 'ws://'+document.location.hostname+':8082/';
-		var player = new JSMpeg.Player(url, {canvas: canvas});
-	</script>
-  </td><td>
+  <div class="grid-container">
+    <div class="grid-item1">
+	    <script type="text/javascript" src="jsmpeg.min.js"></script>
+	    <canvas id="video-canvas" style="width: 100%"></canvas>
+    	<script type="text/javascript">
+        var canvas = document.getElementById('video-canvas');
+        var url = 'ws://'+document.location.hostname+':8082/';
+        var player = new JSMpeg.Player(url, {canvas: canvas});
+      </script>
+    </div>
+    <div class="grid-item1 grid-item2">
       <text id='ws' style="font-family: 'Courier New', Courier, monospace;"></text>
-      </td></tr></table>
+    </div>
+  </div>
 </body>
 </html>
