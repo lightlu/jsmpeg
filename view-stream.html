@@ -19,7 +19,7 @@
 		path = '/mqtt';
 	}
 	mqtt = new Paho.MQTT.Client(
-			host,
+			document.location.hostname,
 			port,
 			path,
 			"web_" + parseInt(Math.random() * 100, 10)
@@ -42,12 +42,12 @@
             options.userName = username;
             options.password = password;
         }
-        console.log("Host="+ host + ", port=" + port + ", path=" + path + " TLS = " + useTLS + " username=" + username + " password=" + password);
+        console.log("Host="+ document.location.hostname + ", port=" + port + ", path=" + path + " TLS = " + useTLS + " username=" + username + " password=" + password);
         mqtt.connect(options);
     }
 
     function onConnect() {
-        $('#status').val('Connected to ' + host + ':' + port + path);
+         $('#status').val('Connected to ' + document.location.hostname + ':' + port + path);
         // Connection succeeded; subscribe to our topic
         mqtt.subscribe(topic, {qos: 0});
         $('#topic').val(topic);
