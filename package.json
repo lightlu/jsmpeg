@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "http-server": "^0.12.3",
+    "websocket": "^1.0.33",
+    "ws": "^7.4.4"
+  }
+}
