@@ -2,29 +2,48 @@
 
 DIR_JSMPEG=/root/jsmpeg
 
+display_help() {
+	echo "Usage: $0 rtsp_ip rtsp_port ws_relay_port_src ws_relay_port_dst" >&2
+	exit 1
+}
+
 run_jobs() {
 	nohup http-server ${DIR_JSMPEG} >/dev/null 2>&1 &
-	nohup node ${DIR_JSMPEG}/websocket-relay.js supersecret $ws_port_src $ws_port_dst >/dev/null 2>&1 &
+	nohup node ${DIR_JSMPEG}/websocket-relay.js supersecret $ws_relay_port_src $ws_relay_port_dst >/dev/null 2>&1 &
 	#ffmpeg -nostdin -i rtsp://192.168.0.105:8554/ds-test -f mpegts -codec:v mpeg1video  http://127.0.0.1:8081/supersecret &
 	while true
 	do
 		curl -v -X DESCRIBE -m 3 $URL_RTSP > /dev/null 2>&1
 		if [ "$?" -eq 0 ]; then
-			ffmpeg -nostdin -i $URL_RTSP -f mpegts -codec:v mpeg1video  "http://127.0.0.1:${ws_port_src}/supersecret" >/dev/null 2>&1
+			ffmpeg -nostdin -i $URL_RTSP -f mpegts -codec:v mpeg1video  "http://127.0.0.1:${ws_relay_port_src}/supersecret" >/dev/null 2>&1
 		else
 			sleep 3
 		fi
 	done
 }
 
-if [ "$#" -ne 4 ]; then
-  echo "Usage: $0 RTSP_ip RTSP_port WS_relay_port_src WS_relay_port_dst" >&2
-  exit 1
+case "$1" in
+	-h | --help)
+		display_help
+		exit 0
+		;;
+esac
+
+if [ "$#" -eq 4 ]; then
+	rtsp_ip=$1
+	rtsp_port=$2
+	ws_relay_port_src=$3
+	ws_relay_port_dst=$4
+else
+	while [ ! -f "${DIR_JSMPEG}/rc.env" ]
+	do
+		sleep 3
+	done
+	echo "Use ${DIR_JSMPEG}/rc.env" >&2
+	source ${DIR_JSMPEG}/rc.env
 fi
-URL_RTSP="rtsp://$1:$2/ds-test"
-ws_port_src="$3"
-ws_port_dst="$4"
-# URL_RTSP="rtsp://192.168.0.105:8554/ds-test"
+
+URL_RTSP="rtsp://${rtsp_ip}:${rtsp_port}/ds-test"
 
 killall node ffmpeg
 
