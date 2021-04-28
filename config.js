@@ -1,5 +1,5 @@
 //host = '127.0.0.1';
-port = 1884;
+port = 7884;
 topic = '#';		// topic to subscribe to
 useTLS = false;
 username = null;
