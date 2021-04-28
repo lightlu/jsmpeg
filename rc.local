@@ -35,12 +35,14 @@ if [ "$#" -eq 4 ]; then
 	ws_relay_port_src=$3
 	ws_relay_port_dst=$4
 else
-	while [ ! -f "${DIR_JSMPEG}/rc.env" ]
+	while [ ! -f "${DIR_JSMPEG}/env.json" ]
 	do
 		sleep 3
 	done
-	echo "Use ${DIR_JSMPEG}/rc.env" >&2
-	source ${DIR_JSMPEG}/rc.env
+	echo "Use ${DIR_JSMPEG}/env.json" >&2
+	for s in $(jq -r "to_entries|map(\"\(.key)=\(.value|tostring)\")|.[]" ${DIR_JSMPEG}/env.json); do
+		export $s
+	done
 fi
 
 URL_RTSP="rtsp://${rtsp_ip}:${rtsp_port}/ds-test"
