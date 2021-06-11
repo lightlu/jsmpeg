@@ -60,26 +60,30 @@
     };
 
     function onMessageArrived(message) {
-
         var topic = message.destinationName;
-         var payload = message.payloadString;
-         var p = payload.slice();
-         var o = JSON.parse(p);
-         //$('#ws').prepend('<li>' + topic + ' = ' + payload + '</li>');
-         //$('#ws').replaceWith('<text id=ws>' + payload + '</text>');
-         var d = o.objects.toString();
-         var ts = o.timestamp.toString();
-         var dd = d.replace(/\|/g, ' ');
-         var data = ts + " " + dd;
-         var len = mqtt_msg_ary.push(data);
-         if (len > 31) {
-             var x = mqtt_msg_ary.toString();
-             var xx = x.replaceAll(",", "<br />");
+        var payload = message.payloadString;
+        var payload = payload.slice();
+        var json_payload = JSON.parse(payload);
+        var ts = json_payload['@timestamp'];
+
+        var json_object = json_payload.object;
+        //console.log(json_object);
+        var label_id = json_object.id;
+        var label = Object.keys(json_object)[4];
+
+        var json_sensor = json_payload.sensor;
+        var sensorid = json_sensor.id;
+
+        //var objects_parsed = object.replace(/\|/g, ' ');
+        var data = sensorid + " " + ts + " " + label + " " + label_id;
+        var len = mqtt_msg_ary.push(data);
+        if (len > 31) {
+            var x = mqtt_msg_ary.toString();
+            var xx = x.replaceAll(",", "<br />");
             $('#ws').replaceWith('<text id=ws>' + xx + '</text>');
             mqtt_msg_ary = [];
-         }
+        }
     };
-
 
     $(document).ready(function() {
         MQTTconnect();
