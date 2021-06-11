@@ -8,7 +8,7 @@ display_help() {
 }
 
 run_jobs() {
-	nohup http-server ${DIR_JSMPEG} --cgi >/dev/null 2>&1 &
+	nohup http-server ${DIR_JSMPEG} -p ${http_server_port} --cgi >/dev/null 2>&1 &
 	nohup node ${DIR_JSMPEG}/websocket-relay.js supersecret $ws_relay_port_src $ws_relay_port_dst >/dev/null 2>&1 &
 	PORT=${http_upload_port} UPLOAD_DIR=${DIR_JSMPEG} UPLOAD_TMP_DIR=/tmp/ http-server-upload >/dev/null 2>&1 &
 	#ffmpeg -nostdin -i rtsp://192.168.0.105:8554/ds-test -f mpegts -codec:v mpeg1video  http://127.0.0.1:8081/supersecret &
