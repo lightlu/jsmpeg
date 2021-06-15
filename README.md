@@ -4,6 +4,28 @@ JSMpeg is a Video Player written in JavaScript. It consists of an MPEG-TS demuxe
 
 JSMpeg can decode 720p Video at 30fps on an iPhone 5S, works in any modern browser (Chrome, Firefox, Safari, Edge) and comes in at just 20kb gzipped.
 
+## Service start up script
+### [rc.local](rc.local)
+Copy it to /etc/ and let system run it at boot.
+
+## Configuration file
+### [env.json](env.json)
+Use this url to download env.json:
+```
+http://${ip_addr_jsmpeg}:7880/env.json
+```
+Use this url to upload updated env.json to web root directory /:
+```
+http://${ip_addr_jsmpeg}:7879
+```
+
+## Use this url to show up the inference result:
+```
+http://${ip_addr_jsmpeg}:7880
+```
+
+# The following are original README parts
+
 Using it can be as simple as this:
 ```html
 <script src="jsmpeg.min.js"></script>
