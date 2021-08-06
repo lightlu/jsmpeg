@@ -3,7 +3,7 @@ version: '3.4'
 
 services:
   jsmpeg:
-    image: advantech1234/nvds_jsmpeg:1.0.1
+    image: advantech1234/nvds_jsmpeg:1.0.2
     ports:
       - "7879:7879"
       - "7880:7880"
@@ -11,11 +11,3 @@ services:
       - "7882:7882"
     container_name: nvds_jsmpeg
     hostname: nvds_jsmpeg
-
-  mqtt-broker:
-    image: advantech1234/nvds_jsmpeg_mosquitto:1.0.0
-    ports:
-      - "7883:7883"
-      - "7884:7884"
-    container_name: nvds_jsmpeg_mosquitto
-    hostname: nvds_jsmpeg_mosquitto
